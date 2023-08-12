@@ -1,3 +1,5 @@
+import 'package:product_app/data/model/product_model.dart';
+
 class ProductCategoryState {}
 
 class ProductCategoryInitialState extends ProductCategoryState {}
