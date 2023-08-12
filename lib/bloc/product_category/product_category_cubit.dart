@@ -3,7 +3,9 @@ import 'package:product_app/bloc/product_category/product_category_state.dart';
 import 'package:product_app/data/repository/ProductRepository.dart';
 
 class ProductCategoryCubit extends Cubit<ProductCategoryState> {
-  ProductCategoryCubit() : super(ProductCategoryLoading()) {}
+  ProductCategoryCubit() : super(ProductCategoryLoading()) {
+    fetchProductCategory();
+  }
 
   ProductRepository productRepository = ProductRepository();
 

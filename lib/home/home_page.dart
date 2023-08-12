@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:product_app/bloc/product_category/product_category_cubit.dart';
+import 'package:product_app/bloc/product_category/product_category_state.dart';
 
 import '../utils/style_manager.dart';
 
@@ -42,7 +45,30 @@ class HomePage extends StatelessWidget {
               SizedBox(
                 height: 24,
               ),
-              buildTabBar(listTabs),
+              BlocConsumer<ProductCategoryCubit, ProductCategoryState>(
+                listener: (context, state) {
+                  if (state is ProductCategoryError) {
+                    SnackBar snackBar = SnackBar(
+                      content: Text(state.error),
+                      backgroundColor: Colors.red,
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  }
+                },
+                builder: (context, state) {
+                  if(state is ProductCategoryLoading) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  if(state is ProductCategoryLoadedState) {
+                    return buildTabBar(state.categories);
+                  }
+                  return Center(
+                    child: Text("An error occured!"),
+                  );
+                },
+              ),
               SizedBox(height: 24),
               buildTabBarView(listTabs)
             ],
@@ -89,7 +115,9 @@ class HomePage extends StatelessWidget {
             height: 48,
             decoration: BoxDecoration(boxShadow: [
               BoxShadow(
-                  color: Colors.blueAccent.withOpacity(0.7), spreadRadius: 1, blurRadius: 15)
+                  color: Colors.blueAccent.withOpacity(0.7),
+                  spreadRadius: 1,
+                  blurRadius: 15)
             ], borderRadius: BorderRadius.all(Radius.circular(20.0))),
             child: TextField(
               decoration: InputDecoration(
@@ -107,11 +135,16 @@ class HomePage extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(width: 20,),
+        SizedBox(
+          width: 20,
+        ),
         Expanded(
             flex: 1,
             child: IconButton(
-              icon: Icon(Icons.shopping_cart_checkout, color: Colors.blueAccent,),
+              icon: Icon(
+                Icons.shopping_cart_checkout,
+                color: Colors.blueAccent,
+              ),
               onPressed: () {},
             ))
       ],
