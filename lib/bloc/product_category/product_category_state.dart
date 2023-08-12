@@ -10,6 +10,6 @@ class ProductCategoryLoadedState extends ProductCategoryState {
 }
 
 class ProductCategoryError extends ProductCategoryState {
-  Error e;
-  ProductCategoryError(this.e);
+  String error;
+  ProductCategoryError(this.error);
 }
