@@ -1,4 +1,4 @@
-package com.example.dio_cubit
+package com.example.product_app
 
 import io.flutter.embedding.android.FlutterActivity
 

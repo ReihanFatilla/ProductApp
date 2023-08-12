@@ -1,4 +1,4 @@
-# dio_cubit
+# product_app
 
 Learn to Fetch Api with Dio and Cubit State Management
 
