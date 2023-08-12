@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-
 import '../utils/style_manager.dart';
 
-class SearchBar extends StatelessWidget {
-  const SearchBar({super.key});
+class SearchBarWidget extends StatelessWidget {
+  const SearchBarWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,13 +18,14 @@ class SearchBar extends StatelessWidget {
                   color: Colors.blueAccent.withOpacity(0.7),
                   spreadRadius: 1,
                   blurRadius: 15)
-            ], borderRadius: BorderRadius.all(Radius.circular(20.0))),
+            ], borderRadius: const BorderRadius.all(Radius.circular(20.0))),
             child: TextField(
               decoration: InputDecoration(
                 hintText: "Search for products...",
                 hintStyle: getBlackTextStyle(fontSize: 13),
                 prefixIconColor: Colors.blueAccent,
                 fillColor: Colors.white,
+                filled: true,
                 prefixIcon: const Icon(Icons.search),
                 border: const OutlineInputBorder(
                   borderSide: BorderSide.none,
@@ -41,7 +41,7 @@ class SearchBar extends StatelessWidget {
         Expanded(
             flex: 1,
             child: IconButton(
-              icon: Icon(
+              icon: const Icon(
                 Icons.shopping_cart_checkout,
                 color: Colors.blueAccent,
               ),

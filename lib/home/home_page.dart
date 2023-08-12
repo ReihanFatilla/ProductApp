@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:product_app/bloc/product_category/product_category_cubit.dart';
-import 'package:product_app/bloc/product_category/product_category_state.dart';
+import 'package:product_app/widgets/search_bar.dart';
 import 'package:product_app/widgets/tab_home.dart';
-
 import '../utils/style_manager.dart';
 
 class HomePage extends StatelessWidget {
@@ -22,7 +19,7 @@ class HomePage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SearchBar(),
+          SearchBarWidget(),
           SizedBox(height: 24),
           TabHome()
         ],
