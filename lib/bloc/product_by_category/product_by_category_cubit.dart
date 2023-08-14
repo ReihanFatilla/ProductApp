@@ -10,6 +10,7 @@ class ProductByCategoryCubit extends Cubit<ProductByCategoryState>{
   ProductRepository productRepository = ProductRepository();
 
   void fetchProductCategory(String category) async {
+    emit(ProductByCategoryLoading());
     try {
       List<Products> productCategory = await productRepository
           .fetchProductByCategory(category);

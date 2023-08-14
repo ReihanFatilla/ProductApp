@@ -3,10 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:product_app/bloc/product_by_category/Product_by_category_state.dart';
 import 'package:product_app/bloc/product_by_category/product_by_category_cubit.dart';
-import 'package:product_app/data/model/product_model.dart';
 import 'package:product_app/utils/style_manager.dart';
-import 'package:transparent_image/transparent_image.dart';
-
 import '../bloc/product_category/product_category_cubit.dart';
 import '../bloc/product_category/product_category_state.dart';
 import 'product_item_list.dart';
@@ -33,6 +30,7 @@ class TabHome extends StatelessWidget {
           );
         }
         if (state is ProductCategoryLoadedState) {
+          BlocProvider.of<ProductByCategoryCubit>(context).fetchProductCategory(state.categories.firstOrNull ?? "smartphone");
           return DefaultTabController(
               length: state.categories.length,
               child: _buildTabColumn(state.categories, context));
@@ -45,16 +43,15 @@ class TabHome extends StatelessWidget {
   }
 }
 
-Expanded _buildTabBarView(List<String> categories, BuildContext context) {
+Expanded _buildTabBarView(List<String> categories) {
   return Expanded(
       child: TabBarView(
           children: categories.map((category) {
-            return _buildMasonryGridView(category, context);
+            return _buildMasonryGridView();
   }).toList()));
 }
 
-BlocConsumer<ProductByCategoryCubit, ProductByCategoryState> _buildMasonryGridView(String category, BuildContext context) {
-  BlocProvider.of<ProductByCategoryCubit>(context).fetchProductCategory(category);
+BlocConsumer<ProductByCategoryCubit, ProductByCategoryState> _buildMasonryGridView() {
   return BlocConsumer<ProductByCategoryCubit, ProductByCategoryState>(
       listener: (context, state) {
         if (state is ProductByCategoryError) {
@@ -94,14 +91,14 @@ Expanded _buildTabColumn(List<String> categories, BuildContext context) {
   return Expanded(
     child: Column(
       children: [
-        _buildTabBar(categories),
-        _buildTabBarView(categories, context)
+        _buildTabBar(categories, context),
+        _buildTabBarView(categories)
       ],
     ),
   );
 }
 
-TabBar _buildTabBar(List<String> categories) {
+TabBar _buildTabBar(List<String> categories, BuildContext context) {
   return TabBar(
     indicatorSize: TabBarIndicatorSize.tab,
     labelColor: Colors.white,
@@ -112,6 +109,9 @@ TabBar _buildTabBar(List<String> categories) {
       borderRadius: BorderRadius.circular(50),
       color: Colors.blueAccent,
     ),
+    onTap: (tabIndex){
+      BlocProvider.of<ProductByCategoryCubit>(context).fetchProductCategory(categories[tabIndex]);
+    },
     tabs: categories.map((title) => Tab(text: title)).toList(),
   );
 }

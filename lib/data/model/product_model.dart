@@ -34,9 +34,9 @@ class Products {
   int? id;
   String? title;
   String? description;
-  int? price;
-  double? discountPercentage;
-  double? rating;
+  num? price;
+  num? discountPercentage;
+  num? rating;
   int? stock;
   String? brand;
   String? category;
