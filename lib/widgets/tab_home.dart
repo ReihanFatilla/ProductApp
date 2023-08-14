@@ -30,7 +30,6 @@ class TabHome extends StatelessWidget {
           );
         }
         if (state is ProductCategoryLoadedState) {
-          BlocProvider.of<ProductByCategoryCubit>(context).fetchProductCategory(state.categories.firstOrNull ?? "smartphone");
           return DefaultTabController(
               length: state.categories.length,
               child: _buildTabColumn(state.categories, context));
@@ -47,12 +46,14 @@ Expanded _buildTabBarView(List<String> categories) {
   return Expanded(
       child: TabBarView(
           children: categories.map((category) {
-            return _buildMasonryGridView();
+            return _buildMasonryGridView(ProductByCategoryCubit(), category);
   }).toList()));
 }
 
-BlocConsumer<ProductByCategoryCubit, ProductByCategoryState> _buildMasonryGridView() {
+BlocConsumer<ProductByCategoryCubit, ProductByCategoryState> _buildMasonryGridView(ProductByCategoryCubit productByCategoryCubit, String category) {
+  productByCategoryCubit.fetchProductByCategory(category);
   return BlocConsumer<ProductByCategoryCubit, ProductByCategoryState>(
+    bloc: productByCategoryCubit,
       listener: (context, state) {
         if (state is ProductByCategoryError) {
           SnackBar snackBar = SnackBar(
@@ -110,7 +111,7 @@ TabBar _buildTabBar(List<String> categories, BuildContext context) {
       color: Colors.blueAccent,
     ),
     onTap: (tabIndex){
-      BlocProvider.of<ProductByCategoryCubit>(context).fetchProductCategory(categories[tabIndex]);
+
     },
     tabs: categories.map((title) => Tab(text: title)).toList(),
   );
