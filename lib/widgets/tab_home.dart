@@ -45,7 +45,9 @@ class TabHome extends StatelessWidget {
 Expanded _buildTabBarView(List<String> categories) {
   return Expanded(
       child: TabBarView(
-          children: categories.map((category) {
+          children: categories
+              .take(3)
+              .map((category) {
     return _buildMasonryGridView(ProductByCategoryCubit(), category);
   }).toList()));
 }

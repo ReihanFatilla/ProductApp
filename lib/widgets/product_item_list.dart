@@ -17,7 +17,9 @@ class ProductItemList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Navigator.of(context).pushNamed("/detail", arguments: product);
+      },
       child: Column(
         children: [
           Stack(
