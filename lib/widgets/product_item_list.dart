@@ -30,7 +30,7 @@ class ProductItemList extends StatelessWidget {
                 child: FadeInImage.memoryNetwork(
                     placeholder: kTransparentImage,
                     fit: BoxFit.cover,
-                    image: product.images?.first ?? ""),
+                    image: product.thumbnail ?? ""),
               ),
               Positioned.fill(
                 bottom: -20,
