@@ -46,14 +46,17 @@ Expanded _buildTabBarView(List<String> categories) {
   return Expanded(
       child: TabBarView(
           children: categories.map((category) {
-            return _buildMasonryGridView(ProductByCategoryCubit(), category);
+    return _buildMasonryGridView(ProductByCategoryCubit(), category);
   }).toList()));
 }
 
-BlocConsumer<ProductByCategoryCubit, ProductByCategoryState> _buildMasonryGridView(ProductByCategoryCubit productByCategoryCubit, String category) {
+BlocConsumer<ProductByCategoryCubit, ProductByCategoryState> _buildMasonryGridView(
+  ProductByCategoryCubit productByCategoryCubit,
+  String category,
+) {
   productByCategoryCubit.fetchProductByCategory(category);
   return BlocConsumer<ProductByCategoryCubit, ProductByCategoryState>(
-    bloc: productByCategoryCubit,
+      bloc: productByCategoryCubit,
       listener: (context, state) {
         if (state is ProductByCategoryError) {
           SnackBar snackBar = SnackBar(
@@ -84,8 +87,7 @@ BlocConsumer<ProductByCategoryCubit, ProductByCategoryState> _buildMasonryGridVi
         return const Center(
           child: Text("An error occured!"),
         );
-  } 
-  );
+      });
 }
 
 Expanded _buildTabColumn(List<String> categories, BuildContext context) {
@@ -93,7 +95,7 @@ Expanded _buildTabColumn(List<String> categories, BuildContext context) {
     child: Column(
       children: [
         _buildTabBar(categories, context),
-        _buildTabBarView(categories)
+        _buildTabBarView(categories),
       ],
     ),
   );
@@ -110,9 +112,7 @@ TabBar _buildTabBar(List<String> categories, BuildContext context) {
       borderRadius: BorderRadius.circular(50),
       color: Colors.blueAccent,
     ),
-    onTap: (tabIndex){
-
-    },
+    onTap: (tabIndex) {},
     tabs: categories.map((title) => Tab(text: title)).toList(),
   );
 }
