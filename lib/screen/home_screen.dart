@@ -3,8 +3,8 @@ import 'package:product_app/widgets/search_bar.dart';
 import 'package:product_app/widgets/tab_home.dart';
 import '../utils/style_manager.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
