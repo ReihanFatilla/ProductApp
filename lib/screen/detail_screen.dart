@@ -36,6 +36,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   flex: 5,
                   child: Container(
                     height: 250,
+                    padding: EdgeInsets.symmetric(vertical: 8),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10),
                       child: FadeInImage.memoryNetwork(
@@ -51,19 +52,21 @@ class _DetailScreenState extends State<DetailScreen> {
                 Expanded(
                     flex: 2,
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
                       children: (widget.product.images?.getRange(1,
                                   (widget.product.images ?? []).length - 1) ??
                               [])
                           .take(3)
                           .map((image) {
                         return Expanded(
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: FadeInImage.memoryNetwork(
-                                placeholder: kTransparentImage,
-                                fit: BoxFit.cover,
-                                image: image),
+                          child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 8),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: FadeInImage.memoryNetwork(
+                                  placeholder: kTransparentImage,
+                                  fit: BoxFit.cover,
+                                  image: image),
+                            ),
                           ),
                         );
                       }).toList(),
