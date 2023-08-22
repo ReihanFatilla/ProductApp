@@ -30,21 +30,28 @@ class _DetailScreenState extends State<DetailScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _imageRow(),
-          SizedBox(
+          const SizedBox(
+            height: 12,
+          ),
+          _buildTitleCategory(),
+          const SizedBox(
             height: 16,
           ),
-          _titleRatingRow(),
-          SizedBox(
-            height: 8,
+          _buildImageRow(),
+          const SizedBox(
+            height: 16,
+          ),
+          _buildRatingBar(),
+          const SizedBox(
+            height: 16,
           ),
           Text(
             widget.product.description ?? "",
             style:
                 getBlackTextStyle(fontSize: 14, fontWeight: FontWeight.normal),
           ),
-          SizedBox(
-            height: 16,
+          const SizedBox(
+            height: 24,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -61,7 +68,46 @@ class _DetailScreenState extends State<DetailScreen> {
     );
   }
 
-  Container _statsRow(String title, num? value, IconData icon) {
+  Container _buildTitleCategory() {
+    return Container(
+          padding: EdgeInsets.symmetric(horizontal: 36),
+          width: double.infinity,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                widget.product.title ?? "",
+                textAlign: TextAlign.center,
+                style: getBlackTextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                softWrap: true,
+              ),
+              Text(
+                widget.product.category ?? "",
+                textAlign: TextAlign.center,
+                style: getBlackTextStyle(
+                    fontSize: 14, fontWeight: FontWeight.normal),
+                softWrap: true,
+              ),
+            ],
+          ),
+        );
+  }
+
+  Align _buildRatingBar() {
+    return Align(
+      alignment: Alignment.centerRight,
+      child: RatingBarIndicator(
+        rating: (widget.product.rating ?? 0).toDouble(),
+        itemBuilder: (context, index) => Icon(
+          Icons.star,
+          color: Colors.blueAccent,
+        ),
+        itemSize: 24.0,
+      ),
+    );
+  }
+
+  Container  _statsRow(String title, num? value, IconData icon) {
     return Container(
       decoration: BoxDecoration(
           color: Colors.grey.shade200, borderRadius: BorderRadius.circular(10)),
@@ -95,39 +141,7 @@ class _DetailScreenState extends State<DetailScreen> {
     );
   }
 
-  Row _titleRatingRow() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              widget.product.category ?? "",
-              style: getBlackTextStyle(
-                  fontSize: 12, fontWeight: FontWeight.normal),
-            ),
-            Text(
-              widget.product.title ?? "",
-              style:
-                  getBlackTextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            )
-          ],
-        ),
-        RatingBarIndicator(
-          rating: (widget.product.rating ?? 0).toDouble(),
-          itemBuilder: (context, index) => Icon(
-            Icons.star,
-            color: Colors.amber,
-          ),
-          itemSize: 24.0,
-        )
-      ],
-    );
-  }
-
-  Container _imageRow() {
+  Container _buildImageRow() {
     return Container(
       height: 250,
       child: Row(
@@ -161,7 +175,7 @@ class _DetailScreenState extends State<DetailScreen> {
                         child: FadeInImage.memoryNetwork(
                             placeholder: kTransparentImage,
                             fit: BoxFit.cover,
-                            image: image),
+                            image: image,),
                       ),
                     ),
                   );
@@ -179,11 +193,6 @@ class _DetailScreenState extends State<DetailScreen> {
             Navigator.of(context).pop();
           },
           child: Icon(Icons.arrow_back_rounded)),
-      title: Text(
-        "Detail",
-        style: getBlackTextStyle(),
-      ),
-      centerTitle: true,
       actions: [
         Icon(isFavorite
             ? Icons.favorite_border_rounded

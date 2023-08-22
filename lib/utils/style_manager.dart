@@ -13,32 +13,11 @@ TextStyle _getTextStyle(
   );
 }
 
-TextStyle getUnderlineTextStyle({
-  double fontSize = 16,
-  FontWeight fontWeight = FontWeight.w500,
-}) {
-  return _getTextStyle(fontSize, fontWeight, Colors.black);
-}
-
-TextStyle getSeeAllTextStyle({
-  double fontSize = 12,
-  FontWeight fontWeight = FontWeight.w500,
-}) {
-  return _getTextStyle(fontSize, fontWeight, Colors.black);
-}
-
 TextStyle getRateTextStyle({
   double fontSize = 12,
   FontWeight fontWeight = FontWeight.w500,
 }) {
   return _getTextStyle(fontSize, fontWeight, Colors.blueAccent);
-}
-
-TextStyle getTitleTextStyle({
-  double fontSize = 20,
-  FontWeight fontWeight = FontWeight.w500,
-}) {
-  return _getTextStyle(fontSize, fontWeight, Colors.black);
 }
 
 TextStyle getBlackTextStyle({
