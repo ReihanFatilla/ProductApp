@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:product_app/data/model/product_model.dart';
@@ -14,7 +16,29 @@ class DetailScreen extends StatefulWidget {
 }
 
 class _DetailScreenState extends State<DetailScreen> {
+
   var isFavorite = false;
+  Duration _duration = Duration(milliseconds: 400);
+
+  late ClipRRect _primaryImage;
+  final List<ClipRRect> _otherImage = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _primaryImage = ClipRRect(
+        key: const ValueKey<int>(4),
+        borderRadius: BorderRadius.circular(10),
+        child: Container(
+          height: double.infinity,
+          width: double.infinity,
+          child: FadeInImage.memoryNetwork(
+            placeholder: kTransparentImage,
+            fit: BoxFit.cover,
+            image: widget.product.thumbnail ?? "",
+          ),
+        ));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,27 +94,27 @@ class _DetailScreenState extends State<DetailScreen> {
 
   Container _buildTitleCategory() {
     return Container(
-          padding: EdgeInsets.symmetric(horizontal: 36),
-          width: double.infinity,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                widget.product.title ?? "",
-                textAlign: TextAlign.center,
-                style: getBlackTextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                softWrap: true,
-              ),
-              Text(
-                widget.product.category ?? "",
-                textAlign: TextAlign.center,
-                style: getBlackTextStyle(
-                    fontSize: 14, fontWeight: FontWeight.normal),
-                softWrap: true,
-              ),
-            ],
+      padding: EdgeInsets.symmetric(horizontal: 36),
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            widget.product.title ?? "",
+            textAlign: TextAlign.center,
+            style: getBlackTextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            softWrap: true,
           ),
-        );
+          Text(
+            widget.product.category ?? "",
+            textAlign: TextAlign.center,
+            style:
+                getBlackTextStyle(fontSize: 14, fontWeight: FontWeight.normal),
+            softWrap: true,
+          ),
+        ],
+      ),
+    );
   }
 
   Align _buildRatingBar() {
@@ -107,7 +131,7 @@ class _DetailScreenState extends State<DetailScreen> {
     );
   }
 
-  Container  _statsRow(String title, num? value, IconData icon) {
+  Container _statsRow(String title, num? value, IconData icon) {
     return Container(
       decoration: BoxDecoration(
           color: Colors.grey.shade200, borderRadius: BorderRadius.circular(10)),
@@ -149,15 +173,15 @@ class _DetailScreenState extends State<DetailScreen> {
           Expanded(
             flex: 5,
             child: Container(
-              height: 250,
-              padding: EdgeInsets.symmetric(vertical: 8),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: FadeInImage.memoryNetwork(
-                    placeholder: kTransparentImage,
-                    fit: BoxFit.cover,
-                    image: widget.product.thumbnail ?? ""),
-              ),
+                padding: EdgeInsets.symmetric(vertical: 10),
+              child: AnimatedSwitcher(
+                  duration: _duration,
+                  switchInCurve: Curves.easeInOut,
+                  switchOutCurve: Curves.easeInOut,
+                  transitionBuilder: (Widget child, Animation<double> animation) {
+                    return ScaleTransition(scale: animation, child: child);
+                  },
+                  child: _primaryImage),
             ),
           ),
           SizedBox(
@@ -167,17 +191,43 @@ class _DetailScreenState extends State<DetailScreen> {
               flex: 2,
               child: Column(
                 children: (widget.product.images ?? []).take(3).map((image) {
-                  return Expanded(
+                  int index = widget.product.images?.indexOf(image) ?? 0;
+                  _otherImage.add(ClipRRect(
+                    key: ValueKey<int>(index),
+                    borderRadius: BorderRadius.circular(10),
                     child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 8),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: FadeInImage.memoryNetwork(
-                            placeholder: kTransparentImage,
-                            fit: BoxFit.cover,
-                            image: image,),
+                      height: double.infinity,
+                      width: double.infinity,
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: FadeInImage.memoryNetwork(
+                        placeholder: kTransparentImage,
+                        fit: BoxFit.cover,
+                        image: image,
                       ),
                     ),
+                  ));
+
+
+
+                  ClipRRect currentImage = _otherImage[index];
+
+                  return Expanded(
+                    child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            var temp = _primaryImage;
+                            _primaryImage = currentImage;
+                            _otherImage[index] = temp;
+                          });
+                        },
+                        child: AnimatedSwitcher(
+                            duration: _duration,
+                            switchInCurve: Curves.easeInOut,
+                            switchOutCurve: Curves.easeInOut,
+                            transitionBuilder: (Widget child, Animation<double> animation) {
+                              return ScaleTransition(scale: animation, child: child);
+                            },
+                            child: currentImage)),
                   );
                 }).toList(),
               ))
